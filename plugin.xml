@@ -145,6 +145,34 @@
     			<param key="title" value="datacenter.sensors.common.sensors" />
 			</params>
 		</extension>
+                
+                <!-- Server Tab -->
+                		
+		<extension point="cerberusweb.datacenter.server.tab">
+			<id>cerberusweb.datacenter.server.tab.sensors</id>
+			<name>ensors Tab</name>
+			<class>
+				<file>api/App.php</file>
+				<name>WgmDatacenterSensorsServerTab</name>
+			</class>
+			<params>
+				<param key="uri" value="sensors" />
+				<param key="title" value="datacenter.sensors.common.sensors" />
+			</params>
+		</extension>
+                
+		<extension point="cerberusweb.datacenter.server.tab">
+			<id>cerberusweb.datacenter.server.tab.sensors.log</id>
+			<name>ensors Tab</name>
+			<class>
+				<file>api/App.php</file>
+				<name>WgmDatacenterSensorsLogServerTab</name>
+			</class>
+			<params>
+				<param key="uri" value="sensors.log" />
+				<param key="title" value="datacenter.sensors.common.sensors.log" />
+			</params>
+		</extension>
 		
 		<!-- Scheduled Jobs -->
 		

@@ -12,6 +12,9 @@
 		<tu tuid='datacenter.sensors.common.sensors'>
 			<tuv xml:lang="en_US"><seg>Sensors</seg></tuv>
 		</tu>
+		<tu tuid='datacenter.sensors.common.sensors.log'>
+			<tuv xml:lang="en_US"><seg>Sensors Log</seg></tuv>
+		</tu>
 
 		<!-- Activity -->
 		
