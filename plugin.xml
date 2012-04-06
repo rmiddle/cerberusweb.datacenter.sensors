@@ -142,7 +142,7 @@
 			</class>
 			<params>
 				<param key="uri" value="sensors" />
-    			<param key="title" value="Sensors" />
+    			<param key="title" value="datacenter.sensors.common.sensors" />
 			</params>
 		</extension>
 		
