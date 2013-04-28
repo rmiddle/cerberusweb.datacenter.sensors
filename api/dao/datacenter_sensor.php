@@ -1,5 +1,5 @@
 <?php
-class DAO_DatacenterSensor extends C4_ORMHelper {
+class DAO_DatacenterSensor extends Cerb_ORMHelper {
 	const ID = 'id';
 	const TAG = 'tag';
 	const NAME = 'name';
@@ -192,7 +192,7 @@ class DAO_DatacenterSensor extends C4_ORMHelper {
 	static function getByTag($tag) {
 		$objects = self::getWhere(sprintf("%s = %s",
 			self::TAG,
-			C4_ORMHelper::qstr($tag)
+			Cerb_ORMHelper::qstr($tag)
 		));
 		
 		if(empty($objects) || !is_array($objects))
@@ -329,6 +329,7 @@ class DAO_DatacenterSensor extends C4_ORMHelper {
 		$args = array(
 			'join_sql' => &$join_sql,
 			'where_sql' => &$where_sql,
+			'tables' => &$tables,
 			'has_multiple_values' => &$has_multiple_values
 		);
 		
@@ -365,7 +366,7 @@ class DAO_DatacenterSensor extends C4_ORMHelper {
 			
 			case SearchFields_DatacenterSensor::VIRTUAL_WATCHERS:
 				$args['has_multiple_values'] = true;
-				self::_searchComponentsVirtualWatchers($param, $from_context, $from_index, $args['join_sql'], $args['where_sql']);
+				self::_searchComponentsVirtualWatchers($param, $from_context, $from_index, $args['join_sql'], $args['where_sql'], $args['tables']);
 				break;
 		}
 		
