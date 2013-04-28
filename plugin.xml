@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.devblocks.com/schema/plugin.xsd">
 	<id>cerberusweb.datacenter.sensors</id>
-	<name>Datacenter: Sensors</name>
-	<description>This plugin adds sensors to the datacenter for network and service monitoring.</description>
+	<name>Sensors</name>
+	<description>This plugin adds flexible Sensor objects that can be used for network and server monitoring, operational intelligence, etc.</description>
 	<author>WebGroup Media, LLC.</author>
-	<version>0.5.2</version>
-	<link>http://www.cerb5.com/</link>
-	<!--<image>plugin.png</image>-->
+	<version>0.5.5</version>
+	<link>http://www.cerbweb.com/</link>
+	<image>plugin.png</image>
  
 	<!-- Requirements -->
 
 	<requires>
-		<app_version min="5.8.0" max="5.8.99" />
+		<app_version min="6.0.2" max="6.0.99" />
 		<php_extension name="curl" />
 	</requires>
  
 	<!-- Plugin Dependencies -->
 	
 	<dependencies>
-		<require plugin_id="cerberusweb.core" version="5.8.0-dev" />
-		<require plugin_id="cerberusweb.datacenter" version="5.8.0-dev" />
+		<require plugin_id="cerberusweb.core" version="6.0.0-dev" />
 	</dependencies>
 
 	<!-- Patches -->
 	
 	<patches>
-		<patch version="1.0.0" revision="1" file="patches/1.0.0.php" />
+		<patch version="1.0.0" revision="2" file="patches/1.0.0.php" />
 	</patches>
 	
 	<!-- Exported Classes -->
@@ -71,7 +70,7 @@
 				<param key="view_class" value="View_DatacenterSensor" />
 				<param key="options">
 					<value>
-						<!--<data key="create" />-->
+						<data key="create" />
 						<data key="find" />
 						<!--<data key="snippets" />-->
 						<data key="va_variable" />
@@ -130,47 +129,19 @@
 				<param key="menutitle" value="" />
 			</params>
 		</extension>
-
-		<!-- Datacenter Tab -->
-
-		<extension point="cerberusweb.datacenter.tab">
-			<id>cerberusweb.datacenter.tab.sensors</id>
-			<name>Sensors Tab</name>
+		
+		<!-- Profile Page Sections -->
+		
+		<extension point="cerberusweb.ui.page.section">
+			<id>cerberusweb.profiles.sensor</id>
+			<name>Sensor Page Section</name>
 			<class>
-				<file>api/App.php</file>
-				<name>WgmDatacenterSensorsDatacenterTab</name>
+				<file>api/profiles/sensor.php</file>
+				<name>PageSection_ProfilesSensor</name>
 			</class>
 			<params>
-				<param key="uri" value="sensors" />
-    			<param key="title" value="datacenter.sensors.common.sensors" />
-			</params>
-		</extension>
-                
-                <!-- Server Tab -->
-                		
-		<extension point="cerberusweb.datacenter.server.tab">
-			<id>cerberusweb.datacenter.server.tab.sensors</id>
-			<name>ensors Tab</name>
-			<class>
-				<file>api/App.php</file>
-				<name>WgmDatacenterSensorsServerTab</name>
-			</class>
-			<params>
-				<param key="uri" value="sensors" />
-				<param key="title" value="datacenter.sensors.common.sensors" />
-			</params>
-		</extension>
-                
-		<extension point="cerberusweb.datacenter.server.tab">
-			<id>cerberusweb.datacenter.server.tab.sensors.log</id>
-			<name>ensors Tab</name>
-			<class>
-				<file>api/App.php</file>
-				<name>WgmDatacenterSensorsLogServerTab</name>
-			</class>
-			<params>
-				<param key="uri" value="sensors.log" />
-				<param key="title" value="datacenter.sensors.common.sensors.log" />
+				<param key="page_id" value="core.page.profiles" />
+				<param key="uri" value="sensor" />
 			</params>
 		</extension>
 		
@@ -199,6 +170,7 @@
 				<param key="macro_context" value="cerberusweb.contexts.datacenter.sensor" />
 				<param key="contexts">
 					<value>
+						<data key="cerberusweb.contexts.group" />
 						<data key="cerberusweb.contexts.role" />
 						<data key="cerberusweb.contexts.worker" />
 					</value>
