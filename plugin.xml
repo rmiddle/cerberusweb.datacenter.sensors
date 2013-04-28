@@ -4,17 +4,17 @@
 	<name>Sensors</name>
 	<description>This plugin adds flexible Sensor objects that can be used for network and server monitoring, operational intelligence, etc.</description>
 	<author>WebGroup Media, LLC.</author>
-	<version>0.5.10</version>
+	<version>0.5.13</version>
 	<link>http://www.cerbweb.com/book/latest/plugins/cerberusweb.datacenter.sensors.html</link>
 	<image>plugin.png</image>
- 
+
 	<!-- Requirements -->
 
 	<requires>
-		<app_version min="6.1" max="6.1.99" />
+		<app_version min="6.2" max="6.2.99" />
 		<php_extension name="curl" />
 	</requires>
- 
+
 	<!-- Plugin Dependencies -->
 	
 	<dependencies>
@@ -51,6 +51,14 @@
 		</file>
 		
 	</class_loader>
+
+	<!-- Activity Points -->
+	
+	<activity_points>
+		<activity point="datacenter.sensor.status">
+			<param key="label_key" value="Sensor Status Changed" />
+		</activity>
+	</activity_points>
 
 	<!-- Extensions -->
  
@@ -113,6 +121,25 @@
 				<name>WgmDatacenterSensorsSensorPort</name>
 			</class>
 			<params>
+			</params>
+		</extension>
+
+		<!-- Workspace Widgets -->
+		
+		<extension point="cerberusweb.ui.workspace.widget.datasource">
+			<id>cerberusweb.datacenter.sensor.widget.datasource</id>
+			<name>Sensor</name>
+			<class>
+				<file>api/App.php</file>
+				<name>WorkspaceWidgetDatasource_Sensor</name>
+			</class>
+			<params>
+				<param key="widgets">
+					<value>
+						<data key="core.workspace.widget.counter" />
+						<data key="core.workspace.widget.gauge" />
+					</value>
+				</param>
 			</params>
 		</extension>
 
@@ -191,7 +218,7 @@
 			<params>
 				<param key="uri" value="sensors" />
 			</params>
-		</extension>		
+		</extension>
 		
-    </extensions> 
+	</extensions> 
 </plugin>
