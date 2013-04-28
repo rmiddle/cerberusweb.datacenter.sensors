@@ -1,6 +1,7 @@
 <form action="{devblocks_url}{/devblocks_url}" method="post" id="frmSensor">
 <input type="hidden" name="c" value="datacenter.sensors">
 <input type="hidden" name="a" value="savePeek">
+<input type="hidden" name="view_id" value="{$view_id}">
 {if !empty($model) && !empty($model->id)}<input type="hidden" name="id" value="{$model->id}">{/if}
 <input type="hidden" name="do_delete" value="0">
 
@@ -50,10 +51,11 @@
 		
 		{* Watchers *}
 		<tr>
-			<td width="0%" nowrap="nowrap" valign="middle" align="right">{$translate->_('common.watchers')|capitalize}: </td>
+			<td width="0%" nowrap="nowrap" valign="top" align="right">{$translate->_('common.watchers')|capitalize}: </td>
 			<td width="100%">
 				{if empty($model->id)}
-					<label><input type="checkbox" name="is_watcher" value="1"> {'common.watchers.add_me'|devblocks_translate}</label>
+					<button type="button" class="chooser_watcher"><span class="cerb-sprite sprite-view"></span></button>
+					<ul class="chooser-container bubbles" style="display:block;"></ul>
 				{else}
 					{$object_watchers = DAO_ContextLink::getContextLinks('cerberusweb.contexts.datacenter.sensor', array($model->id), CerberusContexts::CONTEXT_WORKER)}
 					{include file="devblocks:cerberusweb.core::internal/watchers/context_follow_button.tpl" context='cerberusweb.contexts.datacenter.sensor' context_id=$model->id full=true}
@@ -85,6 +87,11 @@
 	$popup = genericAjaxPopupFetch('peek');
 	$popup.one('popup_open', function(event,ui) {
 		$(this).dialog('option','title',"{'datacenter.sensors.common.sensor'|devblocks_translate|capitalize}");
+		
+		$(this).find('button.chooser_watcher').each(function() {
+			ajax.chooser(this,'cerberusweb.contexts.worker','add_watcher_ids', { autocomplete:true });
+		});
+		
 		$(this).find('textarea[name=comment]').keyup(function() {
 			if($(this).val().length > 0) {
 				$(this).next('DIV.notify').show();
@@ -92,12 +99,13 @@
 				$(this).next('DIV.notify').hide();
 			}
 		});
+		
 		$('#frmSensor button.chooser_notify_worker').each(function() {
 			ajax.chooser(this,'cerberusweb.contexts.worker','notify_worker_ids', { autocomplete:true });
 		});
 		
 		$(this).find('select[name=extension_id]').change(function() {
-			genericAjaxGet($(this).next('DIV.params'), 'c=datacenter&a=handleTabAction&tab=cerberusweb.datacenter.tab.sensors&action=renderConfigExtension&extension_id=' + $(this).val() + "&sensor_id={$model->id}");
+			genericAjaxGet($(this).next('DIV.params'), 'c=datacenter.sensors&a=renderConfigExtension&extension_id=' + $(this).val() + "&sensor_id={$model->id}");
 		});
 		
 		$(this).find('input:text:first').focus();

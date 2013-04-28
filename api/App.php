@@ -212,20 +212,36 @@ class Page_Sensors extends CerberusPageExtension {
 			} else { // create
 				$id = DAO_DatacenterSensor::create($fields);
 				
-				@$is_watcher = DevblocksPlatform::importGPC($_REQUEST['is_watcher'],'integer',0);
-				if($is_watcher)
-					CerberusContexts::addWatchers('cerberusweb.contexts.datacenter.sensor', $id, $active_worker->id);
+				// Watchers
+				@$add_watcher_ids = DevblocksPlatform::sanitizeArray(DevblocksPlatform::importGPC($_REQUEST['add_watcher_ids'],'array',array()),'integer',array('unique','nonzero'));
+				if(!empty($add_watcher_ids))
+					CerberusContexts::addWatchers('cerberusweb.contexts.datacenter.sensor', $id, $add_watcher_ids);
+				
+				// View marquee
+				if(!empty($id) && !empty($view_id)) {
+					C4_AbstractView::setMarqueeContextCreated($view_id, 'cerberusweb.contexts.datacenter.sensor', $id);
+				}
 			}
 			
 			// Custom field saves
 			@$field_ids = DevblocksPlatform::importGPC($_POST['field_ids'], 'array', array());
 			DAO_CustomFieldValue::handleFormPost('cerberusweb.contexts.datacenter.sensor', $id, $field_ids);
 		}
+	}
+	
+	function renderConfigExtensionAction() {
+		$extension_id = DevblocksPlatform::importGPC($_REQUEST['extension_id'], 'string', '');
+		$sensor_id = DevblocksPlatform::importGPC($_REQUEST['sensor_id'], 'integer', '0');
 		
-		// Reload view?
-		if(!empty($view_id)) {
-			if(null != ($view = C4_AbstractViewLoader::getView($view_id)))
-				$view->render(); 
+		if(null != ($tab_mft = DevblocksPlatform::getExtension($extension_id))
+				&& null != ($inst = $tab_mft->createInstance())
+				&& $inst instanceof Extension_Sensor) {
+			
+			if(null == ($sensor = DAO_DatacenterSensor::get($sensor_id))) {
+				$inst->renderConfig();
+			} else {
+				$inst->renderConfig($sensor->params);
+			}
 		}
-	}	
+	}
 };
